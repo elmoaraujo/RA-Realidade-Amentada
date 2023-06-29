@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.8/aframe/build/aframe-ar.js"></script>
+
+    <title>Realidade Aumentada</title>
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+  
+    <script type="text/javascript" src="/./assets/Reprodutor(Videos).js"></script> <!-- importando o script do reprodutor de video -->
+    
+    
+<!-- "Abaixo temos o modo Vr, ficará um oculos no lado inferior direito, para desabilitar (false) 
+  e para ativar o modo vr basta colocar (true) na parte "vr-mode-ui".  -->
+    <a-scene
+    vr-mode-ui="enabled: true"
+    loading-screen="enabled: false;"
+    arjs="sourceType: webcam; debugUIEnabled: false;"
+    id="scene"
+    embedded
+    gesture-detector
+    camera-setup
+    >
+
+    <!-- Adiocinamos o diretorio dos videos por aqui, lembrando que os Id devem ser colocados
+    em ordem crescentes  e o diretorio do video src  deve ser upado na pasta assets e em seguida colocar 
+  o diretorio na parte do src="diretorio".  -->
+    <a-assets>
+    <video id="video1" src="/assets/videos/Nossa Senhora das Correntes.mp4" type="video/mp4" autoplay crossorigin></video>
+    <video id="video2" src="/assets/videos/teatro sete de setembro.mp4" type="video/mp4" autoplay crossorigin></video>
+    <video id="video3" src="/assets/videos/Mirante da Rocheira.mp4" type="video/mp4" autoplay crossorigin></video>
+    <video id="video4" src="/assets/videos/Catedral Nossa Senhora do Rosario.mp4" type="video/mp4" autoplay crossorigin></video>
+    <video id="video5" src="/assets/videos/paço imperial.mp4" type="video/mp4" autoplay crossorigin></video>
+    <video id="video6" src="/assets/videos/Oratório da Forca.mp4" type="video/mp4" autoplay crossorigin></video>
+    <video id="video7" src="/assets/videos/Igreja da Santa Cruz.mp4" type="video/mp4" autoplay crossorigin></video>
+    <video id="video8" src="/assets/videos/Mercado Publico.mp4" type="video/mp4" autoplay crossorigin></video>
+    <video id="video9" src="/assets/videos/Igreja de São Goncalo.mp4" type="video/mp4" autoplay crossorigin></video>
+    <video id="video10" src="/assets/videos/Casa do Penedo.mp4" type="video/mp4" autoplay crossorigin></video>
+    <video id="video11" src="/assets/videos/Casa Aposentadoria.mp4" type="video/mp4" autoplay crossorigin></video>
+    <video id="video12" src="/assets/videos/Convento Nossa Senhora dos Anjos.mp4" type="video/mp4" autoplay crossorigin></video>
+    <video id="video13" src="/assets/videos/Igreja Nossa Senhora Rosário dos Pretos.mp4" type="video/mp4" autoplay crossorigin></video>
+    </a-assets>
+    
+       <!-- Nessa região abaixo  é onde será colocado os marcadores personalizados, para que o codigo não 
+        fica-se extenso... foi criado um script   onde irá conter os marcadores de acordo com seus respectivos
+        videos (ID), lembrando que todos os videos irão conter as mesmas dimensões e tamanho. Foi feito assim
+        para que após o video ser disparado todos eles tenham o mesmo padrão e mesma configuração.
+       -->
+    <script type="text/javascript" src="/./assets/marcadorespersonalizados.js"></script>    <!--Importação do script dos marcadores. -->
+
+    
+    <!-- em seguida temos a opção de camera , é ela que irá apontar para o marcador personalizado.  -->
+
+    <script>
+      AFRAME.registerComponent('camera-setup', {
+        init: function () {
+          var cameraEl = this.el.querySelector('[camera]');
+          var self = this;
+    
+          // Verificar se o dispositivo possui suporte à câmera traseira
+          navigator.mediaDevices.enumerateDevices()
+            .then(function (devices) {
+              var rearCameraFound = false;
+              devices.forEach(function (device) {
+                if (device.kind === 'videoinput' && device.label.toLowerCase().includes('back')) {
+                  rearCameraFound = true;
+                }
+              });
+    
+              // Definir a câmera do A-Frame para usar a câmera traseira
+              if (rearCameraFound) {
+                cameraEl.setAttribute('device-id', 'back');
+              } else {
+                console.warn('Nenhuma câmera traseira encontrada. Usando a câmera padrão.');
+              }
+            })
+            .catch(function (error) {
+              console.error('Erro ao enumerar dispositivos de mídia: ', error);
+            });
+        }
+      });
+    </script>
+
+
+    <a-entity camera></a-entity>
+</a-scene>
